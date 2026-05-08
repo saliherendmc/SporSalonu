@@ -1,0 +1,185 @@
+﻿@model List<SporSalonu.Models.BeslenmeProgramlari>
+@{
+    ViewData["Title"] = "Beslenme Yönetimi";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-utensils text-warning me-2"></i>@ViewBag.UyeAd - Beslenme Programı</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
+            <i class="fas fa-arrow-left me-1"></i>Geri Dön
+        </a>
+    </div>
+
+    <div class="row">
+        <!-- Yeni Öğün Ekleme Formu -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 rounded-4">
+                <h5 class="fw-bold mb-3 text-primary">Yeni Öğün Ekle</h5>
+
+                <!-- API Arama Motoru (Garantili Versiyon) -->
+                <div class="mb-3 position-relative" id="aramaKapsayici">
+                    <label class="form-label fw-bold small text-muted">Besin Kalori Sorgula (API)</label>
+                    <div class="input-group">
+                        <input type="text" id="besinAramaInput" class="form-control" placeholder="Örn: Nutella, Elma...">
+                        <button type="button" onclick="apiBesinAra()" class="btn btn-dark">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <!-- API Sonuç Listesi (Z-index ve Background Fix) -->
+                    <div id="apiSonuclar" class="list-group shadow-lg d-none"
+                         style="position: absolute; width: 100%; z-index: 9999 !important; background: white !important; border: 1px solid #ddd; max-height: 250px; overflow-y: auto; margin-top: 2px;">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <form asp-action="OgunEkle" method="post">
+                    <input type="hidden" name="UyeId" value="@ViewBag.UyeId" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Öğün Adı</label>
+                        <select name="OgunAdi" class="form-select">
+                            <option>Kahvaltı</option>
+                            <option>Öğle Yemeği</option>
+                            <option>Ara Öğün</option>
+                            <option>Akşam Yemeği</option>
+                            <option>Antrenman Sonrası</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">İçerik (Seçilen Besin)</label>
+                        <textarea id="icerikInput" name="Icerik" class="form-control" rows="3" placeholder="Örn: 100g Yulaf, 2 tam yumurta..." required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Toplam Kalori (Kcal)</label>
+                        <input type="number" id="kaloriInput" name="Kalori" class="form-control" value="0" required />
+                        <small class="text-muted">API'den seçilen değer 100g içindir.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning w-100 fw-bold text-dark py-2 shadow-sm mt-2">
+                        <i class="fas fa-save me-1"></i>Programa Ekle
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mevcut Liste -->
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4 rounded-4">
+                <h5 class="fw-bold mb-3">Kayıtlı Öğünler</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Öğün</th>
+                                <th>İçerik</th>
+                                <th>Kalori</th>
+                                <th class="text-end">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var ogun in Model)
+                                {
+                                    <tr>
+                                        <td><span class="badge bg-light text-dark border">@ogun.OgunAdi</span></td>
+                                        <td class="small">@ogun.Icerik</td>
+                                        <td class="fw-bold text-success">@ogun.Kalori kcal</td>
+                                        <td class="text-end">
+                                            <form asp-action="OgunSil" asp-route-id="@ogun.Id" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0" onclick="return confirm('Bu öğünü silmek istediğinize emin misiniz?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">Henüz bir program yazılmamış.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function apiBesinAra() {
+            const query = document.getElementById('besinAramaInput').value;
+            const resultsDiv = document.getElementById('apiSonuclar');
+
+            if (!query || query.length < 2) return;
+
+            // Görünürlüğü zorla açıyoruz
+            resultsDiv.innerHTML = '<div class="list-group-item small text-center text-primary">Aranıyor...</div>';
+            resultsDiv.classList.remove('d-none');
+            resultsDiv.style.setProperty('display', 'block', 'important');
+
+            fetch('/Home/BesinAra?kelime=' + encodeURIComponent(query))
+                .then(res => {
+                    if (!res.ok) throw new Error("Sunucu hatası: " + res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    resultsDiv.innerHTML = '';
+
+                    if (data && data.products && data.products.length > 0) {
+                        data.products.forEach(product => {
+                            const name = product.product_name_tr || product.product_name || "Bilinmeyen Ürün";
+                            const kcal = product.nutriments?.['energy-kcal_100g'] || product.nutriments?.['energy-kcal'] || 0;
+
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'list-group-item list-group-item-action small d-flex justify-content-between align-items-center';
+                            btn.style.cursor = 'pointer';
+                            btn.innerHTML = `
+                                <div class="text-truncate" style="max-width: 80%;">
+                                    <strong>${name}</strong>
+                                </div>
+                                <span class="badge bg-info text-dark">${Math.round(kcal)} kcal</span>
+                            `;
+
+                            btn.onclick = () => {
+                                document.getElementById('kaloriInput').value = Math.round(kcal);
+                                document.getElementById('icerikInput').value = "100g " + name;
+                                document.getElementById('besinAramaInput').value = name;
+                                resultsDiv.classList.add('d-none');
+                                resultsDiv.style.setProperty('display', 'none', 'important');
+        document.querySelector('select[name="OgunAdi"]').focus();
+                            };
+                            resultsDiv.appendChild(btn);
+                        });
+                    } else {
+                        resultsDiv.innerHTML = '<div class="list-group-item small text-muted text-center p-3">Sonuç bulunamadı.</div>';
+                    }
+                })
+                .catch(err => {
+                    console.error("API Hatası:", err);
+                    resultsDiv.innerHTML = `<div class="list-group-item small text-danger p-3">Hata: ${err.message}</div>`;
+                });
+        }
+
+        // Liste dışına tıklandığında veya seçim yapıldığında kapatma
+        document.addEventListener('click', function (e) {
+            const resultsDiv = document.getElementById('apiSonuclar');
+            const input = document.getElementById('besinAramaInput');
+            const searchBtn = document.querySelector('.btn-dark');
+
+            if (resultsDiv && !resultsDiv.contains(e.target) && e.target !== input && !searchBtn.contains(e.target)) {
+                resultsDiv.classList.add('d-none');
+                resultsDiv.style.setProperty('display', 'none', 'important');
+            }
+        });
+    </script>
+}

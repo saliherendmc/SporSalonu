@@ -1,0 +1,43 @@
+﻿@model SporSalonu.Models.Uyeler
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-dark text-white text-center py-3">
+                    <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Profilimi Güncelle</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Duzenle" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Ad</label>
+                            <input asp-for="Ad" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Soyad</label>
+                            <input asp-for="Soyad" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Telefon</label>
+                            <input asp-for="Telefon" class="form-control" />
+                        </div>
+                        <hr /> <div class="mb-3">
+                            <label class="form-label fw-bold text-danger"><i class="fas fa-lock me-1"></i>Yeni Şifre (Değiştirmek istemiyorsanız boş bırakın)</label>
+                            <input type="password" name="yeniSifre" class="form-control" placeholder="******" />
+                            <small class="text-muted">Şifrenizi güncellemek için yeni bir şifre giriniz.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted">E-posta (Değiştirilemez)</label>
+                            <input asp-for="Email" class="form-control bg-light" readonly />
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg shadow">Bilgileri Kaydet</button>
+                            <a asp-action="Profilim" class="btn btn-link text-secondary text-decoration-none">Vazgeç, Geri Dön</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

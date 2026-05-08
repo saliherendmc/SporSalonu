@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Yönetim Paneli";
+}
+
+<div class="container mt-5">
+    @* Üst Karşılama Alanı *@
+    <div class="row mb-5">
+        <div class="col-md-12 text-center">
+            <div class="p-5 bg-dark text-white rounded-4 shadow-lg border-0 position-relative overflow-hidden">
+                @* Arka plana hafif bir dekoratif ikon *@
+                <i class="fas fa-dumbbell position-absolute opacity-10" style="font-size: 200px; right: -50px; bottom: -50px; transform: rotate(-20deg);"></i>
+
+                <h1 class="display-4 fw-bold mb-3">Yönetim Paneli</h1>
+                <p class="lead opacity-75">Hoş geldiniz, <span class="text-warning fw-bold">@Context.Session.GetString("UserEmail")</span>. Sistem kontrolü sizde.</p>
+                <hr class="my-4 border-secondary opacity-25">
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-controller="Uyeler" asp-action="Create" class="btn btn-primary btn-lg rounded-pill shadow-sm fw-bold px-5">
+                        <i class="fas fa-user-plus me-2"></i>Hızlı Üye Kaydı
+                    </a>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                        <button type="submit" class="btn btn-outline-light btn-lg rounded-pill shadow-sm px-4">
+                            <i class="fas fa-sign-out-alt me-2"></i>Çıkış
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Ana Menü Kartları *@
+    <div class="row g-4 text-center">
+        @* Üye Yönetimi - YÖNETİM MODU *@
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover rounded-4">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="icon-circle bg-primary text-white mb-3 mx-auto shadow-sm">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                    <h3 class="card-title fw-bold">Üye Yönetimi</h3>
+                    <p class="card-text text-muted">Tüm üyeleri listele, bilgilerini güncelle veya yeni kayıt oluştur.</p>
+                    @* asp-route-mod="yonetim" ekleyerek listeyi yönetim modunda açıyoruz *@
+                    <a asp-controller="Uyeler" asp-action="Index" asp-route-mod="yonetim" class="btn btn-primary w-100 rounded-pill mt-auto fw-bold py-2">
+                        Listeyi Görüntüle <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @* Program Yönetimi - PROGRAM MODU *@
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover rounded-4">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="icon-circle bg-warning text-white mb-3 mx-auto shadow-sm">
+                        <i class="fas fa-utensils fa-2x text-dark"></i>
+                    </div>
+                    <h3 class="card-title fw-bold text-dark">Program Yönetimi</h3>
+                    <p class="card-text text-muted">Üyelere özel antrenman listeleri ve beslenme programları tanımla.</p>
+                    @* asp-route-mod="program" ekleyerek listeyi antrenör modunda açıyoruz *@
+                    <a asp-controller="Uyeler" asp-action="Index" asp-route-mod="program" class="btn btn-warning w-100 rounded-pill mt-auto fw-bold py-2 text-dark">
+                        Program Yaz <i class="fas fa-edit ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @* Giriş Takibi *@
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover rounded-4">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="icon-circle bg-success text-white mb-3 mx-auto shadow-sm">
+                        <i class="fas fa-door-open fa-2x"></i>
+                    </div>
+                    <h3 class="card-title fw-bold">Giriş Takibi</h3>
+                    <p class="card-text text-muted">Salona kim, saat kaçta girmiş? Turnike kayıtlarını incele.</p>
+                    <a asp-action="GirisTakibi" class="btn btn-outline-success w-100 rounded-pill mt-auto fw-bold py-2">Sistemi Aç</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icon-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .transition-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff;
+    }
+
+        .transition-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+        }
+
+    .rounded-4 {
+        border-radius: 1.25rem !important;
+    }
+</style>

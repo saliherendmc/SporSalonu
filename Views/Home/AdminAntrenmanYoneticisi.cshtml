@@ -1,0 +1,96 @@
+﻿@model List<SporSalonu.Models.AntrenmanProgramlari>
+@{
+    ViewData["Title"] = "Antrenman Yönetimi";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 px-3">
+        <div>
+            <h2 class="fw-bold text-dark mb-0"><i class="fas fa-dumbbell me-2"></i>Antrenman Programı</h2>
+            <p class="text-muted">Üye: <span class="badge bg-primary">@ViewBag.SeciliUyeAd</span></p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill btn-sm">Geri Dön</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Egzersiz Ekleme Formu -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h5 class="fw-bold text-primary mb-4">Yeni Hareket Ekle</h5>
+                <form asp-action="AntrenmanEkle" method="post">
+                    <input type="hidden" name="UyeId" value="@ViewBag.UyeId" />
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Gün</label>
+                        <select name="Gun" class="form-select">
+                            <option>Pazartesi</option>
+                            <option>Salı</option>
+                            <option>Çarşamba</option>
+                            <option>Perşembe</option>
+                            <option>Cuma</option>
+                            <option>Cumartesi</option>
+                            <option>Pazar</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Bölge</label>
+                        <input type="text" name="Bolge" class="form-control" placeholder="Örn: Göğüs" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Hareket Adı</label>
+                        <input type="text" name="HareketAdi" class="form-control" placeholder="Örn: Bench Press" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold">Set</label>
+                            <input type="number" name="Set" class="form-control" value="3">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold">Tekrar</label>
+                            <input type="number" name="Tekrar" class="form-control" value="12">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Program Listesi -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Gün</th>
+                            <th>Bölge/Hareket</th>
+                            <th>Set x Tekrar</th>
+                            <th class="text-end pe-4">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4"><span class="badge bg-info text-dark">@item.Gun</span></td>
+                                <td>
+                                    <div class="fw-bold">@item.Bolge</div>
+                                    <div class="small text-muted">@item.HareketAdi</div>
+                                </td>
+                                <td class="fw-bold text-primary">@item.Set x @item.Tekrar</td>
+                                <td class="text-end pe-4">
+                                    <form asp-action="AntrenmanSil" asp-route-id="@item.Id" method="post">
+                                        <button class="btn btn-sm text-danger border-0"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,185 @@
+﻿@model IEnumerable<SporSalonu.Models.Uyeler>
+
+@{
+    ViewData["Title"] = "Üye Listesi";
+    // Ana sayfadan gelen 'mod' parametresini yakalıyoruz
+    string mod = Context.Request.Query["mod"];
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">
+                <i class="fas @(mod == "program" ? "fa-swatchbook text-warning" : "fa-users-cog text-primary") me-2"></i>
+                @(mod == "program" ? "Program Yönetim Paneli" : "Kayıtlı Üyeler")
+            </h2>
+            <p class="text-muted mb-0">Toplam @Model.Count() kayıtlı sporcu bulunmaktadır.</p>
+        </div>
+        @if (mod != "program")
+        {
+            <a asp-action="Create" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                <i class="fas fa-plus me-1"></i> Yeni Üye Ekle
+            </a>
+        }
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Üye Bilgileri</th>
+                            @if (mod != "program")
+                            {
+                                <th>İletişim</th>
+                                <th>Paket</th>
+                                <th class="text-end pe-4">Yönetim İşlemleri</th>
+                            }
+                            else
+                            {
+                                <th class="text-center">Antrenman</th>
+                                <th class="text-center">Beslenme</th>
+                                <th class="text-center">Ölçümler</th>
+                                <th class="text-center">Ödemeler</th>
+                                <th class="text-end pe-4">Durum</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="@(mod == "program" ? "bg-warning" : "bg-primary") bg-opacity-10 @(mod == "program" ? "text-warning" : "text-primary") rounded-circle p-2 me-3 text-center" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <span class="fw-bold d-block">@item.Ad @item.Soyad</span>
+                                            <small class="text-muted">ID: #@item.Id</small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                @if (mod != "program")
+                                {
+                                    @* --- ÜYE YÖNETİMİ MODU --- *@
+                                    <td>
+                                        <div class="small">
+                                            <i class="fas fa-envelope text-muted me-1"></i> @item.Email<br />
+                                            <i class="fas fa-phone text-muted me-1"></i> @item.Telefon
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge @(item.UyelikPaketi?.PaketAdi == "VIP" ? "bg-warning text-dark" : "bg-info text-white") rounded-pill">
+                                            @(item.UyelikPaketi?.PaketAdi ?? "Atanmadı")
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            @* Yeni Ödeme Butonu *@
+                                            <a asp-controller="Home" asp-action="OdemeGecmisi" asp-route-id="@item.Id" class="btn btn-light btn-sm rounded-circle shadow-sm" title="Ödeme Al / Geçmiş">
+                                                <i class="fas fa-wallet text-success"></i>
+                                            </a>
+                                            @* Ölçüm Geçmişi Butonu *@
+                                            <a asp-controller="Home" asp-action="UyeOlcumleri" asp-route-id="@item.Id" class="btn btn-light btn-sm rounded-circle shadow-sm" title="Ölçüm Geçmişi">
+                                                <i class="fas fa-weight text-info"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-light btn-sm rounded-circle shadow-sm" title="Düzenle">
+                                                <i class="fas fa-edit text-warning"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-light btn-sm rounded-circle shadow-sm"
+                                               onclick="return confirm('Üyeyi silmek istediğinize emin misiniz?')" title="Sil">
+                                                <i class="fas fa-trash text-danger"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    @* --- PROGRAM YÖNETİMİ MODU --- *@
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-action="Antrenman" asp-route-id="@item.Id" class="btn btn-warning btn-sm rounded-pill px-3 shadow-sm">
+                                            <i class="fas fa-dumbbell me-1"></i> Program
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-action="BeslenmeYonetimi" asp-route-id="@item.Id" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
+                                            <i class="fas fa-apple-alt me-1"></i> Beslenme
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-action="UyeOlcumleri" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white rounded-pill px-3 shadow-sm">
+                                            <i class="fas fa-chart-line me-1"></i> Ölçümler
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-controller="Home" asp-action="OdemeGecmisi" asp-route-id="@item.Id" class="btn btn-dark btn-sm rounded-pill px-3 shadow-sm">
+                                            <i class="fas fa-lira-sign me-1"></i> Ödemeler
+                                        </a>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <span class="badge bg-light text-dark border">Aktif</span>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table thead th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        border: none;
+    }
+
+    .table tbody tr {
+        transition: all 0.2s;
+    }
+
+        .table tbody tr:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    .btn-info {
+        background-color: #0dcaf0;
+        border-color: #0dcaf0;
+    }
+</style>
+
+<!-- DataTables CSS & JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.table').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+            },
+            "dom": '<"d-flex justify-content-between mb-3"f>rtip',
+            "pageLength": 10,
+            "ordering": true,
+            "columnDefs": [
+                { "orderable": false, "targets": "_all" },
+                { "orderable": true, "targets": [0] }
+            ]
+        });
+    });
+</script>

@@ -1,0 +1,125 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = SporSalonu
+build_property.RootNamespace = SporSalonu
+build_property.ProjectDir = C:\Users\MUHARREM\Desktop\uygulama_2025\SporSalonu\SporSalonu\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\MUHARREM\Desktop\uygulama_2025\SporSalonu\SporSalonu
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/GirisTakibi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2lyaXNUYWtpYmkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/AdminAntrenmanYoneticisi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBZG1pbkFudHJlbm1hbllvbmV0aWNpc2kuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/Antrenman.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBbnRyZW5tYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/BeslenmeYonetimi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCZXNsZW5tZVlvbmV0aW1pLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/Duzenle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEdXplbmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/GirisTakibi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHaXJpc1Rha2liaS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/OdemeGecmisi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxPZGVtZUdlY21pc2kuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/OlcumEkle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxPbGN1bUVrbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/Profilim.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9maWxpbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/UyeAntrenmanGorunumu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVeWVBbnRyZW5tYW5Hb3J1bnVtdS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Home/UyeOlcumleri.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxVeWVPbGN1bWxlcmkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Uyeler/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXllbGVyXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Uyeler/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXllbGVyXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Uyeler/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXllbGVyXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/UyelikPaketleri/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXllbGlrUGFrZXRsZXJpXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/UyelikPaketleri/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXllbGlrUGFrZXRsZXJpXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/MUHARREM/Desktop/uygulama_2025/SporSalonu/SporSalonu/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-hdstntyrld

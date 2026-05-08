@@ -1,0 +1,239 @@
+﻿@model SporSalonu.Models.Uyeler
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Profilim";
+    var sonGirisler = ViewBag.SonGirisler as List<SporSalonu.Models.GirisKayitlari>;
+    var olcumGecmisi = ViewBag.OlcumGecmisi as List<SporSalonu.Models.Olcumler>;
+    var sonOlcum = ViewBag.SonOlcum as SporSalonu.Models.Olcumler;
+    var beslenmeProgrami = ViewBag.BeslenmeProgrami as List<SporSalonu.Models.BeslenmeProgramlari>;
+
+    // --- Yeni Eklenen Mantık: Üyelik Süresi Hesaplama ---
+    var kalanGun = (Model.UyelikBitisTarihi - DateTime.Now).Days;
+    var uyariRengi = kalanGun <= 7 ? "danger" : "info";
+}
+
+<div class="container py-4">
+    @* --- Üyelik Durumu Uyarısı --- *@
+    @if (kalanGun >= 0)
+    {
+        <div class="alert alert-@uyariRengi border-0 shadow-sm rounded-4 d-flex align-items-center mb-4 p-3" role="alert">
+            <i class="fas fa-calendar-check fa-2x me-3"></i>
+            <div>
+                <span class="fw-bold d-block">Üyelik Durumu: Aktif</span>
+                Üyeliğinizin bitmesine <span class="badge bg-@uyariRengi text-white">@kalanGun gün</span> kaldı.
+                <small class="ms-2 opacity-75">(@Model.UyelikBitisTarihi.ToString("dd MMMM yyyy"))</small>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-dark border-0 shadow-sm rounded-4 d-flex align-items-center mb-4 p-3" role="alert">
+            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+            <div>
+                <span class="fw-bold d-block text-warning">Üyelik Süreniz Doldu!</span>
+                Hizmetlerden yararlanmaya devam etmek için lütfen üyeliğinizi yenileyin.
+            </div>
+        </div>
+    }
+
+    @* Üst Başlık *@
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
+        <div>
+            <h1 class="fw-bold text-dark mb-1">Hoş geldin, @Model.Ad! 👋</h1>
+            <p class="text-secondary fs-5 mb-0">Hedeflerine ulaşman için yanındayız.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="OlcumEkle" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                <i class="fas fa-plus me-2"></i>Ölçüm Ekle
+            </a>
+            <a asp-action="Duzenle" class="btn btn-outline-dark rounded-pill px-4 fw-bold">
+                <i class="fas fa-cog me-2"></i>Düzenle
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @* Sol Taraf *@
+        <div class="col-lg-8">
+            @* İstatistik Kartları *@
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 text-center p-3 h-100 bg-white">
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-3 mx-auto mb-2" style="width: 55px;">
+                            <i class="fas fa-fire text-warning"></i>
+                        </div>
+                        <span class="text-muted small fw-bold d-block text-uppercase">Hedef</span>
+                        <h4 class="fw-bold mb-0">@Model.GunlukKaloriHedefi <small class="fs-6">kcal</small></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 text-center p-3 h-100 bg-white">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 mx-auto mb-2" style="width: 55px;">
+                            <i class="fas fa-weight text-primary"></i>
+                        </div>
+                        <span class="text-muted small fw-bold d-block text-uppercase">Kilo</span>
+                        <h4 class="fw-bold mb-0">@(sonOlcum?.Kilo ?? 0) <small class="fs-6">kg</small></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 text-center p-3 h-100 bg-white">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-3 mx-auto mb-2" style="width: 55px;">
+                            <i class="fas fa-ruler-vertical text-success"></i>
+                        </div>
+                        <span class="text-muted small fw-bold d-block text-uppercase">Boy</span>
+                        <h4 class="fw-bold mb-0">@(sonOlcum?.Boy ?? 0) <small class="fs-6">cm</small></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-4 text-center p-3 h-100 bg-white">
+                        <div class="bg-danger bg-opacity-10 rounded-circle p-3 mx-auto mb-2" style="width: 55px;">
+                            <i class="fas fa-percentage text-danger"></i>
+                        </div>
+                        <span class="text-muted small fw-bold d-block text-uppercase">Yağ</span>
+                        <h4 class="fw-bold mb-0">%@(sonOlcum?.YagOrani ?? 0)</h4>
+                    </div>
+                </div>
+            </div>
+
+            @* --- Beslenme Planı Bölümü (Yeni) --- *@
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4 border-start border-warning border-4 ps-2">Bugünkü Beslenme Planın</h5>
+                    <div class="row g-3">
+                        @if (beslenmeProgrami != null && beslenmeProgrami.Any())
+                        {
+                            foreach (var ogun in beslenmeProgrami)
+                            {
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded-3 border-start border-warning border-3 h-100">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-bold text-dark">@ogun.OgunAdi</span>
+                                            <span class="badge bg-warning text-dark rounded-pill">@ogun.Kalori kcal</span>
+                                        </div>
+                                        <p class="small text-secondary mb-0">@ogun.Icerik</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-12">
+                                <div class="p-4 text-center bg-light rounded-4">
+                                    <i class="fas fa-utensils fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted mb-0">Henüz bir beslenme planı tanımlanmamış.</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @* Grafik *@
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4 border-start border-primary border-4 ps-2">Kilo Gelişim Grafiği</h5>
+                    <div style="height: 300px;">
+                        <canvas id="kiloGrafigi"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Sağ Taraf *@
+        <div class="col-lg-4">
+            @* Antrenman Programı *@
+            <div class="card border-0 shadow-lg rounded-4 mb-4 text-white text-center p-4" style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);">
+                <h6 class="text-uppercase small fw-bold opacity-75">BUGÜNKÜ ANTRENMANIN</h6>
+                <h2 class="fw-bold my-3">@DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("tr-TR"))</h2>
+                <div class="bg-white bg-opacity-10 rounded-3 p-3 mb-4 border border-white border-opacity-10">
+                    <i class="fas fa-dumbbell fa-2x mb-2"></i>
+                    <h4 class="mb-0 fw-bold">@(ViewBag.BugunkuProgram ?? "Dinlenme")</h4>
+                </div>
+                <a asp-action="Antrenman" class="btn btn-light btn-lg w-100 fw-bold text-primary rounded-pill shadow-sm">
+                    DETAYLARI GÖR <i class="fas fa-chevron-right ms-2"></i>
+                </a>
+            </div>
+
+            @* QR Kartı *@
+            <div class="card border-0 shadow-sm rounded-4 text-center p-4 bg-white mb-4">
+                <h6 class="text-muted fw-bold mb-3 small">DİJİTAL ÜYE KARTI</h6>
+                <div class="p-3 bg-light rounded-4 d-inline-block mx-auto mb-3 border border-dashed">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=@Model.Id" style="width: 150px;" alt="QR Code" />
+                </div>
+                <p class="small text-secondary mb-0">Turnike geçişi için QR kodu kullanın.</p>
+                <hr class="my-3 opacity-25">
+                <div class="small fw-bold text-muted">Üye ID: #@Model.Id</div>
+            </div>
+
+            @* Giriş Hareketleri *@
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3 small text-uppercase text-muted">Son Girişler</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <tbody>
+                                @if (sonGirisler != null && sonGirisler.Any())
+                                {
+                                    foreach (var giris in sonGirisler)
+                                    {
+                                        <tr>
+                                            <td class="ps-0"><i class="fas fa-circle text-success small me-2"></i>@giris.GirisZamani.ToString("dd/MM")</td>
+                                            <td class="text-end pe-0 fw-bold">@giris.GirisZamani.ToString("HH:mm")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="2" class="text-center text-muted small py-2">Kayıt yok.</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('kiloGrafigi').getContext('2d');
+            const tarihler = @Html.Raw(Json.Serialize(olcumGecmisi?.Select(o => o.OlcumTarihi.ToString("dd/MM")) ?? new List<string>()));
+            const kilolar = @Html.Raw(Json.Serialize(olcumGecmisi?.Select(o => o.Kilo) ?? new List<double>()));
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: tarihler,
+                    datasets: [{
+                        label: 'Kilo',
+                        data: kilolar,
+                        borderColor: '#4e73df',
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#4e73df',
+                        pointBorderColor: '#fff',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: { callback: value => value + ' kg' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+    </script>
+}
